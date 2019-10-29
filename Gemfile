@@ -35,6 +35,8 @@ gem 'flipper', '~> 0.17.1'
 # I'm not sure redis would be the best store to use... maybe the activerecord store would be better...
 gem 'flipper-redis', '~> 0.17.1'
 
+gem 'flipper-ui', '~> 0.17.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
