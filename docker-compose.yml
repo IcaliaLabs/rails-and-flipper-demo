@@ -1,0 +1,23 @@
+version: "3.7"
+
+volumes:
+  postgres_data:
+  redis_data:
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - ${RAILS_FLIPPER_DEMO_PGPORT:-5432}:5432
+    environment:
+      POSTGRES_PASSWORD: 3x4mpl3P455w0rd
+
+  redis:
+    image: redis:4-alpine
+    ports:
+      - ${RAILS_FLIPPER_DEMO_REDIS_PORT:-6379}:6379
+    volumes:
+      - redis_data:/data
+    command: redis-server

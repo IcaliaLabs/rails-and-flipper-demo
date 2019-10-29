@@ -1,0 +1,91 @@
+version: "3.7"
+
+volumes:
+  app_gem_bundle:   # Who knew? Now this works!
+  app_node_modules: # See comment below on 'test' service's volume
+
+services:
+  # The job processor container - we'll use this as a base for the rest of the
+  # containers:
+  test: &app
+    image: icalialabs/rails-and-flipper-demo:development
+    build:
+      context: .
+      target: development
+      args:
+        - DEVELOPER_UID=${UID:-1000}
+        - DEVELOPER_USER=${USER:-me}
+
+    entrypoint: /usr/src/bin/dev-entrypoint.sh
+    command: rspec
+    depends_on:
+      - postgres
+      - redis
+
+    volumes:
+      # Mount our app code directory (".") into our app containers at the
+      # "/usr/src" folder:
+      - .:/usr/src
+
+      - app_gem_bundle:/usr/local/bundle
+
+      # Replace the local 'node_modules' folder with a Docker volume, so we can
+      # run the frontend app either from the host (i.e. macOS) or using
+      # containers without having one or another clobbering the npm packages or
+      # conflicting versions for macOS / Linux:
+      - app_node_modules:/usr/src/node_modules
+
+    # Keep the stdin open, so we can attach to our app container's process and
+    # do things such as byebug, etc:
+    stdin_open: true
+
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+
+    # Specify environment variables available for our app containers. We'll
+    # leave a YML anchor in case we need to override or add more variables if
+    # needed on each app container:
+    environment: &app_env
+      # We'll set the DATABASE_URL environment variable for the app to connect
+      # to our postgres container:
+      DATABASE_URL: postgres://postgres:3x4mpl3P455w0rd@postgres:5432
+
+      # We'll set the RAILS_ENV and RACK_ENV environment variables to
+      # 'development', so our app containers will start in 'development' mode
+      # on this compose project:
+      RAILS_ENV: test
+      RACK_ENV: test
+
+  # This container autocompiles, serves and live-reloads Webpack assets
+  # (including our ReactJS code) for our development environment. This service
+  # is proxied by the `web` container, so there is no need to publish ports for
+  # it:
+  webpacker:
+    <<: *app
+    ports:
+      - ${RAILS_FLIPPER_DEMO_WEBPACKER_DEV_SERVER_PORT:-3035}:3035
+    depends_on: []
+    command: bin/webpack-dev-server
+    labels:
+      com.icalialabs.plis.group: web
+    environment:
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+      RAILS_ENV: development
+
+  web:
+    <<: *app
+    labels:
+      com.icalialabs.plis.group: web
+    depends_on:
+      - postgres
+      - webpacker
+      - redis
+    ports:
+      - ${RAILS_FLIPPER_DEMO_WEB_PORT:-3000}:3000
+    command: rails server -p 3000 -b 0.0.0.0
+    environment:
+      <<: *app_env
+      REDIS_URL: redis://redis:6379/1
+      RAILS_ENV: development
+      RACK_ENV: development
+      RAILS_LOG_TO_STDOUT: 'true'

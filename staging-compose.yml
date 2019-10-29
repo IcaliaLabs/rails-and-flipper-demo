@@ -1,0 +1,48 @@
+# This is a compose file used to bring up the "release" versions of the apps
+# under development.
+#
+# We recommend you add the following alias to your profile to use this
+# configuration:
+# `alias staging-compose="docker-compose -f docker-compose.yml -f staging-compose.yml"`
+
+version: "3.7"
+
+services:
+  web: &app
+    image: icalialabs/rails-and-flipper-demo:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: release
+      args:
+        - DEVELOPER_UID=${UID:-1000}
+        - DEVELOPER_USER=${USER:-me}
+
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+
+    # Link to our postgres and redis containers, so they can be visible from our
+    # app containers:
+    depends_on:
+      - postgres
+      - redis
+
+    # Specify environment variables available for our app containers. We'll
+    # leave a YML anchor in case we need to override or add more variables if
+    # needed on each app container:
+    environment: &app_env
+      # We'll set the DATABASE_URL environment variable for the app to connect
+      # to our postgres container:
+      DATABASE_URL: postgres://postgres:3x4mpl3P455w0rd@postgres:5432
+      REDIS_URL: redis://redis:6379/1
+
+      # We'll set the RAILS_ENV and RACK_ENV environment variables to
+      # 'development', so our app containers will start in 'development' mode
+      # on this compose project:
+      RAILS_ENV: production
+      RACK_ENV: production
+      RAILS_LOG_TO_STDOUT: 'true'

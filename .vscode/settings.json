@@ -1,0 +1,23 @@
+{
+    "editor.rulers": [80],
+    "editor.trimAutoWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/.bundle": true
+    },
+    "workbench.colorCustomizations": {},
+    "editor.tabSize": 2,
+    "[javascript]": {
+        "editor.tabSize": 2
+    },
+    "[ruby]": {
+      "editor.tabSize": 2
+    },
+    "files.trimTrailingWhitespace": true,
+}

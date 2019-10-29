@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script is used by this project's Docker development entrypoint script
+# to check if the app database (and any of the configured database schemas)
+# exists, tripping out if they are missing.
+#
+# If this script trips out, the entrypoint script will then try to run the
+# database setup. This is part of the magic that allows us the "clone & run"
+# configuration.
+require 'rubygems'
+require 'rake'
+require 'bundler'
+
+Bundler.setup(:default, :development)
+
+require 'active_record'
+require 'erb'
+require 'yaml'
+require 'byebug'
+
+def connection_to_database?
+  connection = ActiveRecord::Base.establish_connection
+  connection.connected?
+end
+
+def database_initialized?
+  curr_ver = ActiveRecord::Migrator.current_version
+  curr_ver > 0
+end
+
+begin
+  connection_tries ||= 3
+  exit 1 unless connection_to_database? && database_initialized?
+  exit 0
+rescue PG::ConnectionBad
+  unless (connection_tries -= 1).zero?
+    puts "Retrying DB connection #{connection_tries} more times..."
+    sleep ENV.fetch('APP_SETUP_WAIT', '5').to_i
+    retry
+  end
+  exit 2
+rescue ActiveRecord::NoDatabaseError
+  exit 3
+ensure
+  ActiveRecord::Base.clear_all_connections!
+end

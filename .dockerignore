@@ -1,0 +1,79 @@
+# Files ignored on the Docker build context.
+
+# Part 1: Include the Git ignore rules: ========================================
+# Ignore bundler config.
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+/node_modules
+/yarn-error.log
+
+/public/assets
+**/.*_hist*
+**/pry_history
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+/public/assets
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore dotenv files:
+**/*.env
+
+/.local
+
+# Ignore codeclimate engine configuration files, which are downloadable from
+# icalia guides repo with the `codeclimate prepare` command:
+/.reek.yml
+/.rubocop.yml
+/.rubocop-rails.yml
+/.scss-lint.yml
+
+# Ignore database dumps:
+/db/dumps/*
+
+# Ignore rspec saved state:
+/spec/examples.txt
+
+# Ignore OS artifacts:
+**/.DS_Store
+
+# Part 2: Ignore unnecesary version-controlled files:
+
+# Ignore the local Git files:
+/.git
+/.gitignore
+/.gitattributes
+
+# Ignore github templates:
+/.github/
+
+# Ignore the docker files - changes in these shouldn't affect the built layers:
+Dockerfile
+docker-compose.yml
+common-services.yml
+staging-compose.yml
+
+# Ignore the CI/CD configuration files:
+/.semaphore
+/.drone.yml
+/heroku.yml
+/jarvis.lock
+/jarvis.yml
+/.codeclimate.yml
+
+# Ignore test coverage reports:
+coverage/*
