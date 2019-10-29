@@ -14,4 +14,11 @@ RSpec.describe Person, type: :model do
   it 'responds to #email' do
     is_expected.to respond_to :email
   end
+
+  describe 'validations' do
+    subject { build :person }
+    it 'validates the uniqueness of email' do
+      is_expected.to validate_uniqueness_of(:email)
+    end
+  end
 end
