@@ -239,6 +239,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 6.0.0)
+  redis (~> 4.0)
   rspec-rails (~> 4.0.0.beta3)
   sass-rails (~> 5)
   selenium-webdriver
