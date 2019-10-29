@@ -4,6 +4,13 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+# Ignore shell history files
+/.*_hist*
+**/pry_history
+.vscodes
+
+.DS_store
+
 # Ignore bundler config.
 /.bundle
 
@@ -12,22 +19,70 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+*.tmp
 
-# Ignore uploaded files in development.
+# Ignore uploaded files in development
 /storage/*
 !/storage/.keep
 
-/public/assets
-.byebug_history
+# Ignore node modules directory contents:
+/node_modules/*
+!/node_modules/.keep
+/yarn-error.log
 
-spec/examples.txt
+/public/assets
+
+/.config
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/public/packs
+/public/packs-test
+yarn-debug.log*
+.yarn-integrity
 
+# Ignore dotenv files:
+**/*.env
+!**/*example*.env
+
+# Ignore RSpec state:
+/spec/examples.txt
+
+# Ignore Test Coverage output:
+/coverage
+
+.local
+
+# Ignore container's home directory artifacts;
+/.cache
+/.gem
+/.pki
+/.yarnrc
+.vscode/settings.json
+.gitignore
+.ruby_inline
+**/node_modules
+
+# Ignore codeclimate engine configuration files, which are downloadable from
+# icalia guides repo with the `codeclimate prepare` command:
+coffeelint.json
+.csslintrc
+.eslintignore
+.eslintrc
+.rubocop.yml
+.reek.yml
+.rubocop.yml
+.rubocop-rails.yml
+.scss-lint.yml
 /public/packs
 /public/packs-test
 /node_modules
-/yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore database dumps
+/db/dumps/*
+/db/backups/*
+!/db/dumps/README.md
+
+.DS_Store
