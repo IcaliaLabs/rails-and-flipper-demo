@@ -28,6 +28,15 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
+# Enables/disables features in the app, without re-deploying or making changes
+# in the code base:
+gem 'flipper', '~> 0.17.1'
+
+# Use activerecord to store the flipper feature toggles:
+gem 'flipper-active_record', '~> 0.17.1'
+
+gem 'flipper-ui', '~> 0.17.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
