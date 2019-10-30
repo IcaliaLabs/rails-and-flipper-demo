@@ -12,12 +12,11 @@ require 'rubygems'
 require 'rake'
 require 'bundler'
 
-Bundler.setup(:default, :development)
+Bundler.setup(:default) # , :development)
 
 require 'active_record'
 require 'erb'
 require 'yaml'
-require 'byebug'
 
 def connection_to_database?
   connection = ActiveRecord::Base.establish_connection
@@ -31,7 +30,8 @@ end
 
 begin
   connection_tries ||= 3
-  exit 1 unless connection_to_database? && database_initialized?
+  exit 1 unless connection_to_database?
+  exit 2 unless database_initialized?
   exit 0
 rescue PG::ConnectionBad
   unless (connection_tries -= 1).zero?
@@ -39,9 +39,9 @@ rescue PG::ConnectionBad
     sleep ENV.fetch('APP_SETUP_WAIT', '5').to_i
     retry
   end
-  exit 2
+  exit 1
 rescue ActiveRecord::NoDatabaseError
-  exit 3
+  exit 2
 ensure
   ActiveRecord::Base.clear_all_connections!
 end
