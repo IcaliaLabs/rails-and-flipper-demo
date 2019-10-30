@@ -22,3 +22,8 @@ end
 Flipper::UI.configure do |config|
   config.fun = false
 end
+
+# Seed the feature list (not necessary...)
+%i[new_people_form].each do |feature_name|
+  Flipper.add feature_name
+end
