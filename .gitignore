@@ -11,6 +11,8 @@
 
 .DS_store
 
+.viminfo
+
 # Ignore bundler config.
 /.bundle
 
