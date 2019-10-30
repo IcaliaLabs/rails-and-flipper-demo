@@ -65,7 +65,7 @@ services:
     ports:
       - ${RAILS_FLIPPER_DEMO_WEBPACKER_DEV_SERVER_PORT:-3035}:3035
     depends_on: []
-    command: bin/webpack-dev-server
+    command: webpack-dev-server
     labels:
       com.icalialabs.plis.group: web
     environment:
