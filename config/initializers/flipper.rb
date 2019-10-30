@@ -18,3 +18,7 @@ Flipper.configure do |config|
     Flipper.new(adapter)
   end
 end
+
+Flipper::UI.configure do |config|
+  config.fun = false
+end
