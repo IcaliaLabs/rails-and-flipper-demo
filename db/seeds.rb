@@ -8,3 +8,4 @@
 
 # Release Feature Toggles - Keep only the ones currently on development.
 Flipper.add :new_people_form
+Flipper.add :site_redesign

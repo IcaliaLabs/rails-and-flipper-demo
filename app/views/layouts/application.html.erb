@@ -5,7 +5,12 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <% if Flipper[:site_redesign].enabled? %>
+    <%= stylesheet_link_tag 'new-application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% else %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <% end %>
+
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
